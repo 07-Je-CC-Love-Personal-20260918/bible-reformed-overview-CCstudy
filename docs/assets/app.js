@@ -25,6 +25,29 @@
   const at=document.querySelector('nav.toc[data-auto]');
   if(at){let h='';document.querySelectorAll('main section[id]').forEach(s=>{const t=s.querySelector('h2');if(!t)return;if(s.dataset.grp)h+=`<div class="grp">${s.dataset.grp}</div>`;h+=`<a href="#${s.id}">${t.childNodes[0].textContent.trim()}</a>`});at.innerHTML=h}
 
+  // ---- 多级目录：一级（分组，带序号）› 二级（章节）› 三级（小节），可折叠、可拖宽 ----
+  (function(){const nav=document.querySelector('nav.toc');if(!nav||nav.dataset.tree)return;nav.dataset.tree=1;
+   const CN='一二三四五六七八九十';const kids=[...nav.children];const groups=[];let g=null;
+   kids.forEach(el=>{if(el.classList.contains('grp')){g={t:el.textContent.trim(),items:[]};groups.push(g)}else if(el.tagName==='A'){if(!g){g={t:'',items:[]};groups.push(g)}g.items.push(el)}});
+   if(!groups.length)return;
+   let n3=0;const sub=a=>{const id=decodeURIComponent((a.getAttribute('href')||'').slice(1));const sec=id&&document.getElementById(id);if(!sec||sec.tagName==='DETAILS')return [];
+    return [...sec.querySelectorAll(':scope h3, :scope > div > h3, :scope .card > h3')].filter(h=>h.textContent.trim()&&!h.closest('nav')).slice(0,12).map(h=>{if(!h.id)h.id=id+'-h'+(++n3);h.style.scrollMarginTop='110px';return [h.id,h.textContent.trim()]})};
+   let html='',gi=0;
+   groups.forEach(gr=>{const items=gr.items.map(a=>{const s=sub(a);const t=a.textContent.trim();
+     return s.length?`<details class="t2"><summary><a href="${a.getAttribute('href')}">${t}</a></summary>${s.map(([i,x])=>`<a class="t3" href="#${i}">${x}</a>`).join('')}</details>`:`<a class="t2a" href="${a.getAttribute('href')}">${t}</a>`}).join('');
+    if(!gr.t){html+=items;return}gi++;const num=/^[一二三四五六七八九十〇]|^\d|^[①-⑳]/.test(gr.t)?'':`<span class="tn">${gi<=10?CN[gi-1]:gi}</span>`;
+    html+=`<details class="t1" open><summary>${num}<span>${gr.t}</span></summary>${items}</details>`});
+   nav.innerHTML=`<div class="tocbar"><b>📑 目录</b><button type="button" class="tocx" data-x="1" title="全部展开">⊞</button><button type="button" class="tocx" data-x="0" title="全部折叠">⊟</button></div><div class="tocbody">${html}</div><div class="tocgrip" title="拖动调整目录宽度"></div>`;
+   nav.querySelectorAll('.tocx').forEach(b=>b.addEventListener('click',()=>nav.querySelectorAll('details').forEach(d=>d.open=b.dataset.x==='1')));
+   // 拖宽
+   const KEY='cc-tocw',root=document.documentElement;try{const w=+localStorage.getItem(KEY);if(w)root.style.setProperty('--tocw',w+'px')}catch(e){}
+   const grip=nav.querySelector('.tocgrip');let sx=0,sw=0;
+   const mv=e=>{const w=Math.max(200,Math.min(560,sw+e.clientX-sx));root.style.setProperty('--tocw',w+'px')};
+   const up=()=>{removeEventListener('pointermove',mv);removeEventListener('pointerup',up);document.body.classList.remove('tocdrag');try{localStorage.setItem(KEY,parseInt(getComputedStyle(root).getPropertyValue('--tocw')))}catch(x){}};
+   grip.addEventListener('pointerdown',e=>{e.preventDefault();sx=e.clientX;sw=nav.getBoundingClientRect().width;document.body.classList.add('tocdrag');addEventListener('pointermove',mv);addEventListener('pointerup',up)});
+   grip.addEventListener('dblclick',()=>{root.style.removeProperty('--tocw');try{localStorage.removeItem(KEY)}catch(e){}});
+  })();
+
   // ---- 惯性平滑滚动 ----
   let lenis=null;
   if(window.Lenis&&!reduce&&matchMedia('(pointer:fine)').matches){
@@ -45,13 +68,14 @@
   if(prog){prog.style.width='100%';prog.style.transformOrigin='0 0';prog.style.willChange='transform'}
   let ticking=false;
   const onScroll=()=>{if(ticking)return;ticking=true;requestAnimationFrame(()=>{const h=root.scrollHeight-root.clientHeight;if(prog)prog.style.transform=`scaleX(${h>0?root.scrollTop/h:0})`;ticking=false})};
-  addEventListener('scroll',onScroll,{passive:true});onScroll();
+  addEventListener('scroll',onScroll,{passive:true});
+  let stT=0;addEventListener('scroll',()=>{root.classList.add('scrolling');clearTimeout(stT);stT=setTimeout(()=>root.classList.remove('scrolling'),160)},{passive:true});onScroll();
 
   // ---- 目录高亮（IO，不在滚动时测量）----
   const links=[...document.querySelectorAll('nav.toc a[href^="#"]')],map=new Map();
   links.forEach(a=>{const el=document.getElementById(decodeURIComponent(a.getAttribute('href').slice(1)));if(el)map.set(el,a)});
-  if(map.size){let cur=null;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){cur&&cur.classList.remove('on');cur=map.get(e.target);cur.classList.add('on');
-      const nav=cur.closest('nav.toc');if(nav){const r=cur.offsetTop-nav.clientHeight/2;nav.scrollTo({top:r,behavior:'smooth'})}}})},{rootMargin:'-20% 0px -70% 0px'});
+  if(map.size){let cur=null;const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){cur&&cur.classList.remove('on');cur=map.get(e.target);cur.classList.add('on');let d=cur.parentElement;while(d&&d!==document.body){if(d.tagName==='DETAILS'&&!d.open)d.open=true;d=d.parentElement}
+      const nav=cur.closest('nav.toc');if(nav){const r=cur.getBoundingClientRect().top-nav.getBoundingClientRect().top+nav.scrollTop-nav.clientHeight/2;nav.scrollTo({top:r,behavior:'smooth'})}}})},{rootMargin:'-20% 0px -70% 0px'});
     map.forEach((a,el)=>io.observe(el))}
 
   // ---- 进场动画 ----
