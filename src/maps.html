@@ -1,0 +1,93 @@
+<div class="hero reveal"><h2>🗺️ 地图 · 历史 · 文化</h2>
+<p>救恩是在<b>真实的时间与地点</b>里发生的。先用<b>概念图</b>看懂“为什么在这里”，再到<b>实时地图</b>上看真实地形；最后用<b>情景图</b>走进会幕和圣殿。</p></div>
+
+<section id="m-maps" class="reveal" data-grp="一 · 七张主题地图">
+<h2>🧭 七张主题地图 <span class="tag">点按钮切换 · 路线自动描绘</span></h2>
+<div class="tabs" id="mapTabs2"></div>
+<h3 id="mapTitle" style="margin-top:6px"></h3>
+<div class="card mapcard"><div id="mapStage"></div></div>
+<div class="box key" id="mapText"></div>
+<div class="grid" id="mapCards"></div>
+<details class="ld"><summary>🛰️ 实时地图（右上角可选 9 种底图；打不开时自动换源。在中国大陆可选“高德”）</summary><div id="mapReal" class="realmap"></div></details>
+</section>
+
+<section id="m-scale" class="reveal" data-grp="二 · 尺度感">
+<h2>📏 距离感：圣经世界有多大？</h2>
+<div class="card bars">
+<div class="row"><b>但 → 别是巴</b><div class="bar" style="--v:.16"></div><span>约 240 公里</span></div>
+<div class="row"><b>耶路撒冷 → 加利利海</b><div class="bar" style="--v:.1;background:linear-gradient(90deg,#d4a017,#c93c3c)"></div><span>约 150 公里</span></div>
+<div class="row"><b>耶路撒冷 → 巴比伦</b><div class="bar" style="--v:.6;background:linear-gradient(90deg,#6b3fb5,#c93c3c)"></div><span>直线约 870，沿路约 1400</span></div>
+<div class="row"><b>吾珥 → 哈兰 → 迦南</b><div class="bar" style="--v:1;background:linear-gradient(90deg,#b5562b,#5f8a2e)"></div><span>约 1600 公里</span></div>
+<div class="row"><b>耶路撒冷 → 罗马</b><div class="bar" style="--v:.9;background:linear-gradient(90deg,#2f6f8f,#6b3fb5)"></div><span>海路约 2300 公里</span></div>
+</div>
+<div class="box mem">“<b>从但到别是巴</b>”是旧约说“全以色列”的固定说法（士 20:1），南北只有约 <span class="m">240 公里</span>，比北京到天津的两倍还短。<span class="hl-b">神在一块小地方做了改变全世界的事</span>。</div>
+</section>
+
+<section id="m-tab" class="reveal" data-grp="三 · 情景图">
+<h2>⛺ 会幕平面情景图 <span class="tag">由外而内 = 走向神的路</span></h2>
+<div class="svgbox card"><svg viewBox="0 0 960 420" role="img" aria-label="会幕平面图">
+<defs><linearGradient id="gold" x1="0" x2="1"><stop offset="0" stop-color="#e8c25a"/><stop offset="1" stop-color="#b8860b"/></linearGradient>
+<marker id="aw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--red)"/></marker></defs>
+<rect x="20" y="40" width="920" height="340" rx="10" fill="none" stroke="var(--sub)" stroke-width="3" stroke-dasharray="2 4"/>
+<text x="40" y="66" font-size="14" font-weight="800" fill="var(--sub)">外院 · 100 × 50 肘</text>
+<rect x="20" y="170" width="10" height="80" fill="#c93c3c"/><text x="40" y="270" font-size="12" fill="#c93c3c" font-weight="700">门（唯一入口，向东）</text>
+<g class="tab-step"><rect x="210" y="180" width="70" height="60" rx="6" fill="#8a6b3c"/><text x="245" y="215" text-anchor="middle" font-size="12" style="fill:#fff" font-weight="700">铜祭坛</text><text x="245" y="262" text-anchor="middle" font-size="11" fill="var(--sub)">① 流血赎罪</text></g>
+<g class="tab-step"><circle cx="370" cy="210" r="26" fill="#9aa7b3"/><text x="370" y="214" text-anchor="middle" font-size="12" style="fill:#fff" font-weight="700">洗濯盆</text><text x="370" y="262" text-anchor="middle" font-size="11" fill="var(--sub)">② 洁净</text></g>
+<rect x="470" y="110" width="440" height="200" rx="6" fill="url(#gold)" opacity=".18" stroke="#b8860b" stroke-width="2"/>
+<text x="560" y="134" font-size="13" font-weight="800" fill="#b8860b">圣所 · 20 × 10 肘</text>
+<g class="tab-step"><rect x="520" y="150" width="56" height="34" rx="4" fill="url(#gold)"/><text x="548" y="172" text-anchor="middle" font-size="11" style="fill:#fff">陈设饼桌</text><text x="548" y="200" text-anchor="middle" font-size="10" fill="var(--sub)">③ 生命的粮</text></g>
+<g class="tab-step"><rect x="520" y="240" width="56" height="34" rx="4" fill="url(#gold)"/><text x="548" y="262" text-anchor="middle" font-size="11" style="fill:#fff">金灯台</text><text x="548" y="290" text-anchor="middle" font-size="10" fill="var(--sub)">④ 世界的光</text></g>
+<g class="tab-step"><rect x="630" y="194" width="44" height="34" rx="4" fill="url(#gold)"/><text x="652" y="216" text-anchor="middle" font-size="11" style="fill:#fff">香坛</text><text x="652" y="246" text-anchor="middle" font-size="10" fill="var(--sub)">⑤ 代求</text></g>
+<line x1="700" x2="700" y1="110" y2="310" stroke="#c93c3c" stroke-width="5"/><text x="706" y="320" font-size="11" fill="#c93c3c" font-weight="700">幔子（太 27:51 裂开）</text>
+<rect x="710" y="150" width="200" height="120" rx="4" fill="url(#gold)" opacity=".35"/>
+<text x="810" y="170" text-anchor="middle" font-size="13" font-weight="800" fill="#8a6b3c">至圣所 · 10 × 10 肘</text>
+<g class="tab-step"><rect x="770" y="192" width="80" height="46" rx="6" fill="url(#gold)" stroke="#8a6b3c"/><text x="810" y="214" text-anchor="middle" font-size="12" style="fill:#fff" font-weight="800">约柜</text><text x="810" y="230" text-anchor="middle" font-size="10" style="fill:#fff">施恩座</text><text x="810" y="258" text-anchor="middle" font-size="10" fill="var(--sub)">⑥ 神的同在</text></g>
+<path class="draw" d="M30 210 H190 M300 210 H330 M400 210 H500 M590 210 H620 M680 210 H760" fill="none" stroke="var(--red)" stroke-width="2.5" stroke-dasharray="6 6" marker-end="url(#aw)"/>
+<text x="480" y="400" text-anchor="middle" font-size="12" fill="var(--sub)">示意图，比例约略</text>
+</svg></div>
+<div class="tbl"><table>
+<tr><th>#</th><th>器具</th><th>材料</th><th>功用</th><th>在基督里成全</th></tr>
+<tr><td>①</td><td>铜祭坛</td><td>铜</td><td>献燔祭，流血赎罪</td><td><span class="m">十字架</span>（来 13:10–12）</td></tr>
+<tr><td>②</td><td>洗濯盆</td><td>铜（妇女的镜子，出 38:8）</td><td>祭司洗手脚</td><td>重生的洗（多 3:5）</td></tr>
+<tr><td>③</td><td>陈设饼桌</td><td>金</td><td>12 个饼，代表 12 支派</td><td>“我就是生命的粮”（约 6:35）</td></tr>
+<tr><td>④</td><td>金灯台</td><td>精金</td><td>圣所唯一的光</td><td>“我是世界的光”（约 8:12）</td></tr>
+<tr><td>⑤</td><td>香坛</td><td>金</td><td>早晚烧香</td><td>基督长远活着代求（来 7:25）</td></tr>
+<tr><td>⑥</td><td>约柜 · 施恩座</td><td>金包皂荚木</td><td>赎罪日洒血之处</td><td><span class="m">挽回祭</span>（罗 3:25，同一个字）</td></tr>
+</table></div>
+<div class="box key">走进会幕的路线就是<span class="m">福音的路线</span>：<span class="hl-r">先流血</span>（祭坛）→ <span class="hl-b">再洁净</span>（洗濯盆）→ <span class="hl-g">才有交通</span>（饼、光、香）→ 最后来到<span class="k">神的面前</span>（施恩座）。耶稣断气时幔子从上到下裂为两半：<span class="u4">道路已经开了</span>（来 10:19–20）。</div>
+<div class="box cf">比利时信条第 25 条：礼仪律的影儿和表号已在基督来时终止，但它们的真理和实质仍在基督里存留。所以读会幕不是寓意解经，而是<span class="k">预表论</span>：新约自己告诉我们怎样读（来 8:5；9:8–9）。</div>
+</section>
+
+<section id="m-temple" class="reveal">
+<h2>🏛️ 神的居所：从伊甸到新耶路撒冷</h2>
+<div class="tl">
+<div class="ev"><span class="d">起初</span> 🌳 <b>伊甸园</b>：神与人同行，是第一座“圣殿”，基路伯守护东边的入口（创 3:24）</div>
+<div class="ev"><span class="d">前 1445</span> ⛺ <b>会幕</b>：可移动的居所，荣耀充满（出 40:34）</div>
+<div class="ev"><span class="d">前 966</span> 🏛️ <b>所罗门圣殿</b>：会幕的尺寸放大一倍，荣耀充满（王上 8:11）</div>
+<div class="ev"><span class="d">约前 592</span> ✨ <b>荣耀离开</b>：以西结看见荣耀从门槛到东门，再到橄榄山（结 10–11）</div>
+<div class="ev"><span class="d">前 586</span> 🔥 <b>第一圣殿被毁</b>（巴比伦）</div>
+<div class="ev"><span class="d">前 516</span> 🧱 <b>第二圣殿</b>：老年人见了就大声哭（拉 3:12），书中<span class="u3">没有记载荣耀降临</span></div>
+<div class="ev"><span class="d">约前 20</span> 🏗️ <b>希律扩建</b>：“这殿是四十六年才造成的”（约 2:20）</div>
+<div class="ev"><span class="d">约前 5</span> 👶 <b>荣耀归回</b>：道成肉身，“支搭帐幕”在我们中间（约 1:14）；“这殿”指他的身体（约 2:21）</div>
+<div class="ev"><span class="d">主后 30</span> ⛪ <b>教会是圣殿</b>：“你们是神的殿”（林前 3:16）</div>
+<div class="ev"><span class="d">主后 70</span> 🔥 <b>第二圣殿被毁</b>（罗马）：影子退场</div>
+<div class="ev"><span class="d">末日</span> 🌅 <b>新耶路撒冷</b>：城是立方体，就是一座至圣所，“城内没有殿，因主神和羔羊为城的殿”（启 21:22）</div>
+</div>
+<div class="box mem">“<b>园 → 幕 → 殿 → 身 → 会 → 城</b>”：神住在人中间的六个阶段，<span class="m">越来越近，越来越大</span>。</div>
+</section>
+
+<section id="m-culture" class="reveal" data-grp="四 · 文化">
+<h2>🏺 读经必备的文化常识</h2>
+<div class="tbl"><table>
+<tr><th>主题</th><th>古代背景</th><th>经文</th><th>读懂了什么</th></tr>
+<tr><td>🤝 立约仪式</td><td>劈开牲畜，立约双方从中间走过：“若违约，就像这些牲畜”</td><td>创 15；耶 34:18</td><td>只有神走过：<span class="m">神单方担保</span></td></tr>
+<tr><td>👞 脱鞋</td><td>转让产业权的凭据</td><td>得 4:7</td><td>波阿斯合法地赎回</td></tr>
+<tr><td>🧂 盐约</td><td>盐不腐坏，象征永久的约</td><td>民 18:19；代下 13:5</td><td>大卫之约的永久性</td></tr>
+<tr><td>🚪 城门</td><td>长老在城门口审判、立约</td><td>得 4；箴 31:23</td><td>“丈夫在城门口与本地长老同坐”</td></tr>
+<tr><td>🍞 一同吃饭</td><td>同席等于接纳、立约</td><td>出 24:11；路 15:2</td><td>耶稣和罪人吃饭，是<span class="hl-r">接纳他们</span></td></tr>
+<tr><td>💍 订婚</td><td>订婚具法律效力，解除要写休书</td><td>太 1:18–19</td><td>约瑟“想要暗暗地把她休了”</td></tr>
+<tr><td>🐑 牧人</td><td>夜里睡在羊圈门口，自己就是门</td><td>约 10:7–11</td><td>“我就是羊的门”</td></tr>
+<tr><td>⚖️ 十字架</td><td>罗马最羞辱的刑罚，公民不受此刑</td><td>申 21:23；加 3:13</td><td>“凡挂在木头上都是被咒诅的”</td></tr>
+</table></div>
+<div class="box hard"><span class="u3">背景知识的位置</span>：文化背景帮助我们理解经文<span class="u1">原本的意思</span>，但<span class="m">经文的意义由圣经自己决定</span>（以经解经）。比利时信条第 7 条：圣经本身是充足的，人的著作不能与它同等。</div>
+</section>

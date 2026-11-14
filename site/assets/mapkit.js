@@ -2,22 +2,31 @@
 (function(){
 // ---------- 实时地图：底图源依次尝试 ----------
 const PROVIDERS=[
- ['Esri 地形','https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}','© Esri'],
- ['CARTO','https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png','© OpenStreetMap © CARTO'],
- ['Esri 影像','https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}','© Esri'],
- ['OSM','https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png','© OpenStreetMap']];
+ ['Esri 地形','https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}','© Esri',{}],
+ ['Esri 街道','https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}','© Esri',{}],
+ ['Esri 影像','https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}','© Esri',{}],
+ ['Esri 浅灰','https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}','© Esri',{maxZoom:16}],
+ ['CARTO 彩色','https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}.png','© OpenStreetMap © CARTO',{subdomains:'abcd'}],
+ ['CARTO 素色','https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png','© OpenStreetMap © CARTO',{subdomains:'abcd'}],
+ ['高德（中国大陆快）','https://webrd0{s}.is.autonavi.com/appmaptile?lang=zh_cn&size=1&scale=1&style=8&x={x}&y={y}&z={z}','© 高德地图',{subdomains:'1234'}],
+ ['OpenTopoMap','https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png','© OpenStreetMap © OpenTopoMap',{maxZoom:15}],
+ ['OpenStreetMap','https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png','© OpenStreetMap',{}]];
+const KEY='cc-tiles';const getK=()=>{try{const v=+localStorage.getItem(KEY);return v>=0&&v<PROVIDERS.length?v:0}catch(e){return 0}};const setK=v=>{try{localStorage.setItem(KEY,v)}catch(e){}};
 window.CCMap=function(el,o){if(!window.L||!el)return null;o=o||{};
  const map=L.map(el,{scrollWheelZoom:false,zoomControl:true,attributionControl:true}).setView(o.center||[32,36],o.zoom||5);
- let k=0,layer=null,ok=0,bad=0,timer=null;
- const badge=L.control({position:'topright'});badge.onAdd=()=>{const d=L.DomUtil.create('div','mapbadge');d.innerHTML='🛰️ 加载中';L.DomEvent.on(d,'click',()=>use((k+1)%PROVIDERS.length));return d};badge.addTo(map);
- function use(i){k=i;ok=0;bad=0;if(layer)map.removeLayer(layer);const[p,u,a]=PROVIDERS[i];
-  layer=L.tileLayer(u,{maxZoom:12,attribution:a,crossOrigin:true}).addTo(map);
-  layer.on('tileload',()=>{ok++;badge.getContainer().innerHTML='🛰️ '+p+' · 点此换底图'});
+ let k=getK(),tried=0,layer=null,ok=0,bad=0,timer=null,auto=true;
+ const ctl=L.control({position:'topright'});let sel,st;
+ ctl.onAdd=()=>{const d=L.DomUtil.create('div','mapbadge');d.innerHTML='<span class="mbst">🛰️</span><select aria-label="选择底图">'+PROVIDERS.map((p,i)=>`<option value="${i}">${p[0]}</option>`).join('')+'</select>';
+  L.DomEvent.disableClickPropagation(d);L.DomEvent.disableScrollPropagation(d);sel=d.querySelector('select');st=d.querySelector('.mbst');
+  sel.addEventListener('change',()=>{auto=false;setK(+sel.value);use(+sel.value)});return d};ctl.addTo(map);
+ function use(i){k=i;ok=0;bad=0;if(layer)map.removeLayer(layer);const[p,u,a,x]=PROVIDERS[i];if(sel)sel.value=i;if(st)st.textContent='⏳';
+  layer=L.tileLayer(u,Object.assign({maxZoom:12,attribution:a},x)).addTo(map);
+  layer.on('tileload',()=>{ok++;if(st)st.textContent='🛰️';el.classList.remove('nomap')});
   layer.on('tileerror',()=>{bad++;if(ok===0&&bad>=4)next()});
-  clearTimeout(timer);timer=setTimeout(()=>{if(ok===0)next()},5000)}
- function next(){if(k<PROVIDERS.length-1)use(k+1);else{badge.getContainer().innerHTML='⚠️ 实时底图暂时无法加载，请看上方示意图';el.classList.add('nomap')}}
+  clearTimeout(timer);timer=setTimeout(()=>{if(ok===0)next()},4500)}
+ function next(){if(!auto){if(st)st.textContent='⚠️';return}tried++;if(tried<PROVIDERS.length)use((k+1)%PROVIDERS.length);else{if(st)st.textContent='⚠️';el.classList.add('nomap')}}
  const det=el.closest('details');
- if(det&&!det.open){det.addEventListener('toggle',function f(){if(det.open){map.invalidateSize();if(!layer)use(0);if(o.onOpen)o.onOpen()}},{passive:true})}else use(0);
+ if(det&&!det.open){det.addEventListener('toggle',function f(){if(det.open){map.invalidateSize();if(!layer)use(k);if(o.onOpen)o.onOpen()}},{passive:true})}else use(k);
  if(det)det.addEventListener('toggle',()=>setTimeout(()=>map.invalidateSize(),50));
  setTimeout(()=>map.invalidateSize(),300);
  return map};
@@ -66,7 +75,7 @@ window.CCConcept=function(el,o){if(!el)return null;const b=o.bounds.slice();cons
  s+=`<text x="${W-8}" y="${H-8}" text-anchor="end" font-size="10" fill="var(--sub)">示意图 · 比例与海岸线为概略</text></svg>`;
  el.innerHTML=s;const svg=el.querySelector('svg');
  const api={X,Y,svg,
-  show(i,anim){svg.querySelectorAll('.croute').forEach(p=>{const on=i<0||+p.dataset.i===i;p.style.display=on?'':'none';if(on&&anim){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.getBoundingClientRect();p.style.transition='stroke-dashoffset '+(o.speed||3)+'s ease-in-out';p.style.strokeDashoffset=0}else if(on){p.style.transition='none';p.style.strokeDashoffset=0;p.style.strokeDasharray=o.routes[+p.dataset.i].dash?'7 6':'none'}})},
+  show(i,anim,keep){if(!svg.isConnected)return;svg.querySelectorAll('.croute').forEach(p=>{const on=i<0||+p.dataset.i===i;if(keep&&!on)return;p.style.display=on?'':'none';if(on&&anim){const L=p.getTotalLength();p.style.strokeDasharray=L;p.style.strokeDashoffset=L;p.getBoundingClientRect();p.style.transition='stroke-dashoffset '+(o.speed||3)+'s ease-in-out';p.style.strokeDashoffset=0}else if(on){p.style.transition='none';p.style.strokeDashoffset=0;p.style.strokeDasharray=o.routes[+p.dataset.i].dash?'7 6':'none'}})},
   group(g){svg.querySelectorAll('.cpt').forEach(n=>n.style.display=!g||n.dataset.g===g?'':'none')},
   mark(lat,lng){const m=svg.querySelector('.cmk');m.style.display='';m.setAttribute('transform',`translate(${X(lng)},${Y(lat)})`);m.style.transition='transform .8s cubic-bezier(.2,.8,.2,1)'}};
  return api};

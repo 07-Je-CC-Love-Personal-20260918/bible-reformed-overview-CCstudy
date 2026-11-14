@@ -280,3 +280,5 @@ details.bk{content-visibility:visible!important}
 .poswrap{height:12px;margin:2px 0 6px}
 .posbar{margin-top:4px}
 @media(max-width:600px){.phases{flex-wrap:wrap;height:auto;gap:3px}.phases div{flex:1 1 calc(33% - 3px)!important;height:24px;border-radius:6px}}
+.mapbadge{display:flex;align-items:center;gap:4px;padding:3px 6px}
+.mapbadge select{border:none;background:transparent;color:var(--ink);font:inherit;font-size:12px;cursor:pointer;max-width:150px}
